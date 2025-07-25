@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin:0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+        }
+        form{
+            background: rgba(255,255,255,0.5);
+            padding: 30px;
+            max-width: 600px;
+            margin:100px auto;
+            border-radius: 10px;
+        }
+        h1{
+            text-align: center;
+            font-size: 2.5em;
+            color: #30488a;
+        }
+        label{
+            display:block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input,textarea,button{
+
+            width: calc(100%-22px);
+            padding: 10px;
+            margin-top :5px;
+            border: 1px solid white; 
+            border-radius: 5px;
+        }
+        button{
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover{
+            background-color: #194a7a;
+            color: white;
+        }
+    </style>
+    <title>
+        feedback collector
+    </title>
+</head>
+<body>
+    <h1>Feedback Collection Form</h1>
+    <form action="/submit-feedback" method="post">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name">
+        <br><br>
+        <label for="contactNumber">Contact Number</label>
+        <input type="number" id="contactNumber" name="contactNumber">
+        <br><br>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email">
+        <br><br>
+        <label for="feedback">Describe your feedback</label>
+        <textarea id="feedback" name="feedback"></textarea>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
