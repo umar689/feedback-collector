@@ -74,6 +74,7 @@
 // app.listen(port,()=>{
 //    console.log(`server is running on http://localhost:${port}`);     
 // });
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -83,13 +84,16 @@ const Feedback = require('./models/Feedback');
 const app = express();
 const port = 3000;
 
+// Debug print
+console.log("Mongo URI:", process.env.MONGODB_URI);
+
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/feedback-collection-system', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.log('MongoDB connection error:', err));
+.then(() => console.log('✅ MongoDB connected'))
+.catch((err) => console.log('❌ MongoDB connection error:', err));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -113,7 +117,6 @@ app.post('/submit-feedback', async (req, res) => {
         await feedback.save();
         console.log('\n✅ Feedback saved successfully');
 
-        // Fetch and print all feedbacks in terminal
         const allFeedbacks = await Feedback.find().sort({ _id: -1 });
         console.log('\n----- 📋 All Feedbacks -----');
         console.table(allFeedbacks.map(f => ({
@@ -124,42 +127,37 @@ app.post('/submit-feedback', async (req, res) => {
         })));
         console.log('----------------------------\n');
 
-        // Simple success message in browser
-       res.send(
-            `
+        res.send(`
             <html>
             <head>  
             <style>
             body{
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            margin:0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-image: url("https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                margin:0;
+                font-family: Arial, Helvetica, sans-serif;
+                background-image: url("https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
             }
             div{
-            background: rgba(255,255,255,0.5);
-            padding: 30px;
-            max-width: 600px;
-            margin:100px auto;
-            border-radius: 10px;
+                background: rgba(255,255,255,0.5);
+                padding: 30px;
+                max-width: 600px;
+                margin:100px auto;
+                border-radius: 10px;
             }
             </style>
             <title>Feedback Submitted</title>
             </head>
+            <body>
             <div>
-            <h1>
-            Thank you
-            </h1>
-            <p>
-            Your feedback has been successfully submitted.</p>
+            <h1>Thank you</h1>
+            <p>Your feedback has been successfully submitted.</p>
             <a href="/"> Go Back to Form</a>
             </div>
             </body>
-            <html>
-            `
-        );
+            </html>
+        `);
     } catch (err) {
         console.log('❌ Error saving feedback:', err);
         res.status(500).send('Error saving feedback');
@@ -170,4 +168,5 @@ app.post('/submit-feedback', async (req, res) => {
 app.listen(port, () => {
     console.log(`🚀 Server is running at http://localhost:${port}`);
 });
+
 
